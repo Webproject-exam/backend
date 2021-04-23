@@ -8,7 +8,7 @@ const {
 
 const router = express.Router();
 
-router.post('/', createUser); // Use register route instead?
+router.post('/', createUser);
 router.get('/', getAllUsers);
 router.patch('/', updateUser);
 router.delete('/', deleteUser);
