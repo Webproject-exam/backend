@@ -11,7 +11,6 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 // Route handlers
-const userRoute = require('./routes/profile.routes');
 const dashboardRoute = require('./routes/dashboard.routes');
 const profileRoute = require('./routes/profile.routes');
 const resetRoute = require('./routes/email.routes');
@@ -38,28 +37,23 @@ if (
 app.use(morgan('dev'));
 // Authenticate user
 const authUser = passport.authenticate('jwt', {session: false});
-
 const hasRole = require('./middleware/role.middleware');
 
 app.use('/', authRoute);
-app.use('/profile', authUser, hasRole.User, userRoute);
 app.use('/dashboard', authUser, hasRole.Manager, dashboardRoute);
 app.use('/profile', authUser, hasRole.User, profileRoute);
 app.use('/reset_password', resetRoute);
 
 // Connect to DB
-mongoose.connect(
-  process.env.DATABASE_CONNECT_URI,
-  {
+mongoose
+  .connect(process.env.DATABASE_CONNECT_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false,
-  },
-  () => {
-    console.log('Connected to DB!');
-  }
-);
+  })
+  .then(() => console.log('Connected to DB!'))
+  .catch(error => console.log(error));
 
 // Start server
 const port = process.env.PORT;
