@@ -38,6 +38,7 @@ exports.login = async (req, res) => {
     res
       .status(500)
       .json({error: 'There was a server-side error with login', error});
+      console.log(error);
   }
 };
 
@@ -114,7 +115,8 @@ function setTokenCookie(res, token) {
   const cookieOptions = {
     httpOnly: true,
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    secure: false,
+    secure: true,
+    sameSite: 'none',
   };
   res.cookie('refreshToken', token, cookieOptions);
 }
