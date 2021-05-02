@@ -13,10 +13,11 @@ const swaggerDocument = require("./swagger.json");
 const app = express();
 
 // Route handlers
-const dashboardRoute = require("./routes/manage.routes");
+const manageRoute = require("./routes/manage.routes");
 const profileRoute = require("./routes/profile.routes");
 const resetRoute = require("./routes/email.routes");
 const authRoute = require("./routes/auth.routes");
+const plantRoute = require("./routes/plant.routes");
 
 // Middlewares
 // parse request of content-type - application/json
@@ -44,9 +45,10 @@ const hasRole = require("./middleware/role.middleware");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/", authRoute);
-app.use("/manage", authUser, hasRole.Manager, dashboardRoute);
+app.use("/manage", authUser, hasRole.Manager, manageRoute);
 app.use("/profile", authUser, hasRole.User, profileRoute);
 app.use("/reset_password", resetRoute);
+app.use("/plants", plantRoute);
 
 // Connect to DB
 mongoose
