@@ -1,5 +1,5 @@
 const Plant = require("../models/Plant");
-
+const jwtDecode = require("jwt-decode");
 exports.getAllPlants = async (req, res) => {
   try {
     const allPlants = await Plant.find({}, [
@@ -45,6 +45,18 @@ exports.updatePlant = async (req, res) => {
     waterNext,
   } = req.body;
 
+  const headers = req.headers.authorization;
+  if (!headers) return res.status(401).send({ error: "Unauthorized" });
+
+  const token = headers.split(" ")[1];
+  const { role } = jwtDecode(token);
+  if (!role) return res.status(401).send({ error: "Unauthorized" });
+
+  if (!role == "manager" || !role === "gardener") {
+    console.log(user.role);
+    return res.status(401).send({ error: "Unauthorized" });
+  }
+
   if (!lastPostponedReason || !lastWateredBy || !lastWateredDate || !waterNext)
     return res.status(400).send({ error: "Data to update cannot be empty!" });
 
@@ -64,12 +76,11 @@ exports.updatePlant = async (req, res) => {
         useFindAndModify: false,
       }
     );
-    res.status(200).send({
-      lastPostponedReason: updatedPlant.watering.lastPostponedReason,
-      lastWateredBy: updatedPlant.watering.lastWateredBy,
-      lastWateredDate: updatedPlant.watering.lastWateredDate,
-      waterNext: updatedPlant.watering.waterNext,
-    });
+
+    console.log(updatedPlant);
+    res
+      .status(200)
+      .json({ lastPostponedReason, lastWateredBy, lastWateredDate, waterNext });
   } catch (error) {
     res
       .status(500)
