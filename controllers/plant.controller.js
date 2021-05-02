@@ -62,7 +62,7 @@ exports.updatePlant = async (req, res) => {
 
   try {
     // Update plant based on id
-    const updatedPlant = await Plant.findOneAndUpdate(
+    await Plant.findOneAndUpdate(
       { _id: id },
       {
         watering: {
@@ -77,7 +77,6 @@ exports.updatePlant = async (req, res) => {
       }
     );
 
-    console.log(updatedPlant);
     res
       .status(200)
       .json({ lastPostponedReason, lastWateredBy, lastWateredDate, waterNext });
