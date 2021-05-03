@@ -8,7 +8,9 @@ exports.getAllPlants = async (req, res) => {
       "watering.waterNext",
       "watering.waterFrequency",
       "lighting",
+			"fertilization.fertAmount",
     ]);
+		console.log(allPlants);
     res.status(200).json(allPlants);
   } catch (error) {
     res.status(500).send({

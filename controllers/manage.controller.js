@@ -130,65 +130,34 @@ exports.deleteUser = async (req, res) => {
 //
 
 exports.createPlant = async (req, res) => {
-  const {
-    name,
-    building,
-    floor,
-    room,
-    waterFrequency,
-    waterNext,
-    responsible,
-    fertFrequency,
-    fertNext,
-    lighting,
-    description,
-    placement,
-    water,
-    nutrition,
-  } = req.body;
+	const {name, information, placement, watering, fertilization, lighting} = req.body;
   // validate fields
   if (
     !name ||
-    !building ||
-    !floor ||
-    !room ||
-    !waterFrequency ||
-    !fertFrequency
+    !information ||
+    !placement ||
+    !watering ||
+    !fertilization ||
+    !lighting
   ) {
     return res.status(400).json({
-      error: "name, building, floor and room is required",
+      error: "name, information, placement, fertilization and lighting is required",
     });
   }
 
   const plant = new Plant({
     name,
-    placement: {
-      building,
-      floor,
-      room,
-    },
-    watering: {
-      waterFrequency,
-      waterNext,
-      responsible,
-    },
-    fertilization: {
-      fertFrequency,
-      fertNext,
-    },
+    placement,
+    watering,
+    fertilization,
     lighting,
-    information: {
-      description,
-      placement,
-      water,
-      nutrition,
-    },
+    information,
   });
 
   // Save new plant to db
   try {
-    await plant.save();
-    res.status(200).json({ plant });
+    // await plant.save();
+    res.status(200).json({message: `Plant with name ${plant.name} has been created.`});
   } catch (error) {
     res
       .status(500)

@@ -3,23 +3,23 @@ const mongoose = require("mongoose");
 const plantSchema = new mongoose.Schema(
   {
     name: {
-      type: "string",
+      type: String,
       required: true,
       trim: true,
     },
     placement: {
       building: {
-        type: "string",
+        type: String,
         required: true,
         trim: true,
       },
       floor: {
-        type: "string",
+        type: Number,
         required: true,
         trim: true,
       },
       room: {
-        type: "string",
+        type: String,
         required: true,
         trim: true,
       },
@@ -28,23 +28,26 @@ const plantSchema = new mongoose.Schema(
       waterFrequency: {
         type: Number,
         required: true,
+        trim: true,
       },
       waterNext: {
         type: Number,
+        trim: true,
       },
       responsible: {
-        type: "string",
+        type: String,
         trim: true,
       },
       lastWateredBy: {
-        type: "string",
+        type: String,
         trim: true,
       },
       lastWateredDate: {
         type: Number,
+        trim: true,
       },
       lastPostponedReason: {
-        type: "string",
+        type: String,
         trim: true,
       },
     },
@@ -52,20 +55,42 @@ const plantSchema = new mongoose.Schema(
       fertFrequency: {
         type: Number,
         required: true,
-      },
+        trim: true,
+			},
       fertNext: {
-        type: Date,
+        type: Number,
+        trim: true,
       },
+			fertAmount: {
+				type: String,
+				required: true,
+        trim: true,
+				enum: ["plentiful", "average", "sparse"]
+			}
     },
     lighting: {
-      type: "string",
+      type: String,
       trim: true,
+			required: true,
+			enum: ["sunlight", "sunlight / half shade", "half shade", "half shade / shade", "shade"],
     },
     information: {
-      description: String,
-      placement: String,
-      water: String,
-      nutrition: String,
+      description: {
+				type: String,
+      	trim: true,
+			},
+      placement: {
+				type: String,
+      	trim: true,
+			},
+      watering: {
+				type: String,
+      	trim: true,
+			},
+      nutrition: {
+				type: String,
+      	trim: true,
+			},
     },
   },
   { timestamps: true }
