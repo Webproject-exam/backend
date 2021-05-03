@@ -10,7 +10,6 @@ exports.getAllPlants = async (req, res) => {
       "lighting",
 			"fertilization.fertAmount",
     ]);
-		console.log(allPlants);
     res.status(200).json(allPlants);
   } catch (error) {
     res.status(500).send({
@@ -29,6 +28,7 @@ exports.getPlant = async (req, res) => {
       "fertilization",
       "information",
       "lighting",
+			"createdAt",
     ]);
     res.status(200).json({ plant });
   } catch (error) {
