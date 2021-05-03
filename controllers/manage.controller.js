@@ -156,7 +156,7 @@ exports.createPlant = async (req, res) => {
 
   // Save new plant to db
   try {
-    // await plant.save();
+    await plant.save();
     res.status(200).json({message: `Plant with name ${plant.name} has been created.`});
   } catch (error) {
     res
