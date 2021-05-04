@@ -7,6 +7,16 @@ const plantSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    responsible: {
+			type: String,
+			trim: true,
+    },
+    lighting: {
+      type: String,
+      trim: true,
+			required: true,
+			enum: ["sunlight", "sunlight / half shade", "half shade", "half shade / shade", "shade"],
+    },
     placement: {
       building: {
         type: String,
@@ -34,10 +44,12 @@ const plantSchema = new mongoose.Schema(
         type: Number,
         trim: true,
       },
-      responsible: {
-        type: String,
+			waterAmount: {
+				type: String,
+				required: true,
         trim: true,
-      },
+				enum: ["plentiful", "average", "sparse"]
+			},
       lastWateredBy: {
         type: String,
         trim: true,
@@ -66,13 +78,19 @@ const plantSchema = new mongoose.Schema(
 				required: true,
         trim: true,
 				enum: ["plentiful", "average", "sparse"]
-			}
-    },
-    lighting: {
-      type: String,
-      trim: true,
-			required: true,
-			enum: ["sunlight", "sunlight / half shade", "half shade", "half shade / shade", "shade"],
+			},
+      lastFertBy: {
+        type: String,
+        trim: true,
+      },
+      lastFertDate: {
+        type: Number,
+        trim: true,
+      },
+      lastPostponedReason: {
+        type: String,
+        trim: true,
+      },
     },
     information: {
       description: {
