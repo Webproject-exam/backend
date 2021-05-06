@@ -141,12 +141,10 @@ exports.createPlant = async (req, res) => {
   // validate fields
   if (
     !name ||
-    !information ||
     !placement ||
     !watering ||
     !fertilization ||
-    !lighting ||
-    !responsible
+    !lighting
   ) {
     return res.status(400).json({
       error:
