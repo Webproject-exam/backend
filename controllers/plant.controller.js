@@ -10,7 +10,8 @@ exports.getAllPlants = async (req, res) => {
       'watering.waterFrequency',
       'lighting',
       'fertilization.fertAmount',
-      'fertilization.fertFrequency'
+      'fertilization.fertFrequency',
+      'fertilization.fertNext'
     ]);
     res.status(200).json(allPlants);
   } catch (error) {
