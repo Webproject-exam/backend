@@ -41,7 +41,7 @@ const plantSchema = new mongoose.Schema(
         trim: true,
       },
       waterNext: {
-        type: Number,
+        type: Date,
         trim: true,
       },
 			waterAmount: {
@@ -70,7 +70,7 @@ const plantSchema = new mongoose.Schema(
         trim: true,
 			},
       fertNext: {
-        type: Number,
+        type: Date,
         trim: true,
       },
 			fertAmount: {
