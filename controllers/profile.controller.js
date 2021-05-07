@@ -28,7 +28,9 @@ exports.updateUser = async (req, res) => {
     !newUserDetails.password &&
     !newUserDetails.oldPassword
   ) {
-    return res.status(400).json({error: 'name, surname or password and oldPassword is needed'});
+    return res
+      .status(400)
+      .json({error: 'name, surname or password and oldPassword is needed'});
   }
 
   if (newUserDetails.name) {
