@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const plantSchema = new mongoose.Schema(
   {
@@ -8,14 +8,20 @@ const plantSchema = new mongoose.Schema(
       trim: true,
     },
     responsible: {
-			type: String,
-			trim: true,
+      type: String,
+      trim: true,
     },
     lighting: {
       type: String,
       trim: true,
-			required: true,
-			enum: ["sunlight", "sunlight / half shade", "half shade", "half shade / shade", "shade"],
+      required: true,
+      enum: [
+        'sunlight',
+        'sunlight / half shade',
+        'half shade',
+        'half shade / shade',
+        'shade',
+      ],
     },
     placement: {
       building: {
@@ -25,6 +31,8 @@ const plantSchema = new mongoose.Schema(
       },
       floor: {
         type: Number,
+        max: 4,
+        min: 0,
         required: true,
         trim: true,
       },
@@ -44,12 +52,12 @@ const plantSchema = new mongoose.Schema(
         type: Date,
         trim: true,
       },
-			waterAmount: {
-				type: String,
-				required: true,
+      waterAmount: {
+        type: String,
+        required: true,
         trim: true,
-				enum: ["plentiful", "average", "sparse"]
-			},
+        enum: ['plentiful', 'average', 'sparse'],
+      },
       lastWateredBy: {
         type: String,
         trim: true,
@@ -68,17 +76,17 @@ const plantSchema = new mongoose.Schema(
         type: Number,
         required: true,
         trim: true,
-			},
+      },
       fertNext: {
         type: Date,
         trim: true,
       },
-			fertAmount: {
-				type: String,
-				required: true,
+      fertAmount: {
+        type: String,
+        required: true,
         trim: true,
-				enum: ["plentiful", "average", "sparse"]
-			},
+        enum: ['plentiful', 'average', 'sparse'],
+      },
       lastFertBy: {
         type: String,
         trim: true,
@@ -94,27 +102,27 @@ const plantSchema = new mongoose.Schema(
     },
     information: {
       description: {
-				type: String,
-      	trim: true,
-			},
+        type: String,
+        trim: true,
+      },
       placement: {
-				type: String,
-      	trim: true,
-			},
+        type: String,
+        trim: true,
+      },
       watering: {
-				type: String,
-      	trim: true,
-			},
+        type: String,
+        trim: true,
+      },
       nutrition: {
-				type: String,
-      	trim: true,
-			},
+        type: String,
+        trim: true,
+      },
     },
   },
-  { timestamps: true }
+  {timestamps: true}
 );
 
-plantSchema.set("toJson", {
+plantSchema.set('toJson', {
   virtuals: true,
   versionKey: false,
   transform(doc, ret) {
@@ -124,4 +132,4 @@ plantSchema.set("toJson", {
   },
 });
 
-module.exports = mongoose.model("Plant", plantSchema);
+module.exports = mongoose.model('Plant', plantSchema);
