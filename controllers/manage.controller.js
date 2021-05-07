@@ -1,6 +1,7 @@
 const UserModel = require('../models/User');
 const Plant = require('../models/Plant');
 const bcrypt = require('bcryptjs');
+const addDays = require('date-fns/addDays');
 
 //
 // @USER
@@ -139,16 +140,10 @@ exports.createPlant = async (req, res) => {
     fertilization,
   } = req.body;
   // validate fields
-  if (
-    !name ||
-    !placement ||
-    !watering ||
-    !fertilization ||
-    !lighting
-  ) {
+  if (!name || !placement || !watering || !fertilization || !lighting) {
     return res.status(400).json({
       error:
-        'name, information, placement, fertilization and lighting is required',
+        'name, placement, watering, fertilization and lighting is required',
     });
   }
 
@@ -162,11 +157,11 @@ exports.createPlant = async (req, res) => {
     information,
   });
 
-  const convertWaterFreqToMilli = plant.watering.waterFrequency * 86400000;
-  const convertFertFreqToMilli = plant.fertilization.fertFrequency * 86400000;
-
-  plant.watering.waterNext = new Date(Date.now() + convertWaterFreqToMilli);
-  plant.fertilization.fertNext = new Date(Date.now() + convertFertFreqToMilli);
+  plant.watering.waterNext = addDays(Date.now(), plant.watering.waterFrequency);
+  plant.fertilization.fertNext = addDays(
+    Date.now(),
+    plant.watering.waterFrequency
+  );
 
   // Save new plant to db
   try {
@@ -181,8 +176,58 @@ exports.createPlant = async (req, res) => {
   }
 };
 
+exports.updatePlant = async (req, res) => {
+  const {
+    id,
+    waterFrequency,
+    waterAmount,
+    fertFrequency,
+    fertAmount,
+    name,
+    lighting,
+    responsible,
+    placement,
+    information,
+  } = req.body;
+
+  if (!req.body) req.status(400).json({error: 'Body cannot be empty'});
+
+  const plantExist = Plant.exists({_id: id});
+  if (!plantExist)
+    return res.status(400).json({error: `Plant with ${id} does not exist`});
+
+  console.log(waterFrequency);
+  const updatedPlant = {
+    name,
+    lighting,
+    responsible,
+    placement,
+    watering: {
+      waterFrequency,
+      waterAmount,
+    },
+    fertilization: {
+      fertFrequency,
+      fertAmount,
+    },
+    information,
+  };
+
+  try {
+    await Plant.findByIdAndUpdate({_id: id}, updatedPlant, {
+      useFindAndModify: false,
+    });
+    res.status(200).json({message: `Plant successfully updated`});
+  } catch (error) {
+    res
+      .status(500)
+      .json({message: 'Internal server error when updating plant'}, error);
+  }
+};
+
 exports.deletePlant = async (req, res) => {
-  const {id} = req.params;
+  const {id} = req.body;
+  console.log(req.body);
   const plantExist = await Plant.exists({_id: id});
   if (!plantExist)
     return res.status(400).json({error: `Cannot find plant with id ${id}`});
@@ -195,6 +240,6 @@ exports.deletePlant = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .send({message: 'Internal server error when deleting plant'}, error);
+      .json({message: 'Internal server error when deleting plant'}, error);
   }
 };
