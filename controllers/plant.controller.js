@@ -43,11 +43,9 @@ exports.getPlant = async (req, res) => {
   }
 };
 
-exports.updatePlantCare = async (req, res) => {
-  const {id} = req.params;
-  const {watering, fertilization} = req.body;
-  let updates = {};
-
+exports.waterPlant = async (req, res) => {
+  const {id, waterNext} = req.body;
+  console.log(req.body);
   // Checks if there is any headers in request
   const headers = req.headers.authorization;
   if (!headers) return res.status(401).send({error: 'Unauthorized'});
@@ -64,32 +62,20 @@ exports.updatePlantCare = async (req, res) => {
 
   //finds user in DB to find name
   const user = await User.findOne({_id});
-
-  // Check if watering object or fertilization object is present
-  if (!watering && !fertilization)
-    return res.status(400).send({
-      error: 'Either watering or fertilization is needed to update plant!',
-    });
-
-  if (watering) {
-    watering.lastWateredBy = user.name;
-    watering.lastWateredDate = Date.now();
-    updates = {watering};
-  }
-
-  if (fertilization) {
-    fertilization.lastFertBy = user.name;
-    fertilization.lastFertDate = Date.now();
-    updates = {fertilization};
-  }
-
+  const updatedPlant = {
+    watering: {
+      waterNext,
+      lastWateredBy: user.name,
+      lastWateredDate: Date.now(),
+    },
+  };
+  // console.log(updatedPlant);
   try {
     // decode token to get role and user id
     // Update plant based on id
-    await Plant.updateOne({_id: id}, {$set: updates});
-    return res
-      .status(200)
-      .json({message: 'Plant has been watered / fertilized'});
+    const plant = await Plant.updateOne({_id: id}, {$set: updatedPlant});
+    // console.log(plant);
+    return res.status(200).json({message: plant});
   } catch (error) {
     res
       .status(500)

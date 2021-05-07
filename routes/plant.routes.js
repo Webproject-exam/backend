@@ -2,7 +2,7 @@ const express = require('express');
 const {
   getAllPlants,
   getPlant,
-  updatePlantCare,
+  waterPlant,
 } = require('../controllers/plant.controller');
 
 const router = express.Router();
@@ -28,6 +28,7 @@ router.get('/:id', getPlant);
  *						lastWateredDate,
  *						waterNext
  */
-router.patch('/:id', updatePlantCare);
+router.patch('/', waterPlant);
 
+// router.patch('/:id', updatePlantCare);
 module.exports = router;
