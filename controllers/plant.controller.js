@@ -1,6 +1,8 @@
 const Plant = require('../models/Plant');
 const User = require('../models/User');
 const jwtDecode = require('jwt-decode');
+const milliseconds = require('date-fns/milliseconds')
+
 exports.getAllPlants = async (req, res) => {
   try {
     const allPlants = await Plant.find({}, [
@@ -71,7 +73,7 @@ exports.updatePlantCare = async (req, res) => {
     });
 
   if (watering) {
-    const convertWaterFreqToMilli = watering.waterFrequency * 86400000;
+    const convertWaterFreqToMilli = milliseconds({ days: watering.waterFrequency })
     watering.waterNext = new Date(Date.now() + convertWaterFreqToMilli);
     watering.lastWateredBy = user.name;
     watering.lastWateredDate = Date.now();
@@ -79,7 +81,7 @@ exports.updatePlantCare = async (req, res) => {
   }
 
   if (fertilization) {
-    const convertFertFreqToMilli = fertilization.fertFrequency * 86400000;
+    const convertFertFreqToMilli = milliseconds({ days: fertilization.fertFrequency })
     fertilization.fertNext = new Date(Date.now() + convertFertFreqToMilli);
     fertilization.lastFertBy = user.name;
     fertilization.lastFertDate = Date.now();
