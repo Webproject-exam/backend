@@ -1,12 +1,13 @@
-const express = require("express");
+const express = require('express');
 const {
   createUser,
   updateUser,
   deleteUser,
   getAllUsers,
   createPlant,
+  updatePlant,
   deletePlant,
-} = require("../controllers/manage.controller");
+} = require('../controllers/manage.controller');
 
 const router = express.Router();
 
@@ -18,27 +19,27 @@ const router = express.Router();
  * POST
  * req.body = name, surname, role, email, password
  */
-router.post("/users", createUser);
+router.post('/users', createUser);
 
 /**
  * GET
  * Get all users
  * Returns name, surname, email, role
  */
-router.get("/users", getAllUsers);
+router.get('/users', getAllUsers);
 
 /**
  * PATCH
  * Update users profile
  * req.body = name, surname, email, role
  */
-router.patch("/users", updateUser);
+router.patch('/users', updateUser);
 
 /**
  * DELETE
  * req.body = email
  */
-router.delete("/users", deleteUser);
+router.delete('/users', deleteUser);
 
 //
 // @Plant
@@ -63,13 +64,20 @@ router.delete("/users", deleteUser);
  *						water,
  *						nutrition,
  */
-router.post("/plants", createPlant);
+router.post('/plants', createPlant);
+
+/**
+ * PATCH
+ * Update existing plant
+ *	req.body = id
+ */
+router.patch('/plants', updatePlant);
 
 /**
  * POST
  * Create new plant
  *	req.params = id
  */
-router.delete("/plants/:id", deletePlant);
+router.delete('/plants', deletePlant);
 
 module.exports = router;
