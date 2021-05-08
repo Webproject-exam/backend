@@ -22,6 +22,7 @@ const plantSchema = new mongoose.Schema(
             'half shade / shade',
             'shade',
          ],
+         default: 'sunlight',
       },
       placement: {
          building: {
@@ -32,9 +33,9 @@ const plantSchema = new mongoose.Schema(
          floor: {
             type: Number,
             max: 4,
-            min: 0,
+            min: 1,
             required: true,
-            trim: true,
+            default: 1
          },
          room: {
             type: String,
@@ -57,13 +58,14 @@ const plantSchema = new mongoose.Schema(
             required: true,
             trim: true,
             enum: ['plentiful', 'average', 'sparse'],
+            default: 'plentiful'
          },
          lastWateredBy: {
             type: String,
             trim: true,
          },
          lastWateredDate: {
-            type: Number,
+            type: Date,
             trim: true,
          },
          lastPostponedReason: {
@@ -87,13 +89,14 @@ const plantSchema = new mongoose.Schema(
             required: true,
             trim: true,
             enum: ['plentiful', 'average', 'sparse'],
+            default: 'plentiful'
          },
          lastFertBy: {
             type: String,
             trim: true,
          },
          lastFertDate: {
-            type: Number,
+            type: Date,
             trim: true,
          },
          lastPostponedReason: {

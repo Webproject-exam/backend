@@ -82,14 +82,14 @@ exports.waterPlant = async (req, res) => {
    if (waterNext) {
       updatedPlant = {
          'watering.waterNext': waterNext,
-         'watering.lastWateredBy': user.name,
-         'watering.lastWateredDate': Date.now(),
+         'watering.lastWateredBy': `${user.name} ${user.surname}`,
+         'watering.lastWateredDate': Date.now()
       };
    }
    if (fertNext) {
       updatedPlant = {
          'fertilization.fertNext': fertNext,
-         'fertilization.lastFertBy': user.name,
+         'fertilization.lastFertBy': `${user.name} ${user.surname}`,
          'fertilization.lastFertDate': Date.now(),
       };
    }
