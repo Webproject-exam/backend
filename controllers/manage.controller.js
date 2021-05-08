@@ -145,9 +145,6 @@ exports.createPlant = async (req, res) => {
       information,
    });
 
-   plant.watering.waterNext = addDays(Date.now(), plant.watering.waterFrequency);
-   plant.fertilization.fertNext = addDays(Date.now(), plant.watering.waterFrequency);
-
    // Save new plant to db
    try {
       await plant.save();
