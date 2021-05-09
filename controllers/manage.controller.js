@@ -150,7 +150,7 @@ exports.createPlant = async (req, res) => {
       message: `Plant with name ${plant.name} has been created.`,
     });
   } catch (error) {
-    res.status(500).json({ error: 'internal server error when creating plant', error });
+    res.status(500).json({ message: 'internal server error when creating plant', error });
   }
 };
 
@@ -201,7 +201,6 @@ exports.updatePlant = async (req, res) => {
 
 exports.deletePlant = async (req, res) => {
   const { id } = req.body;
-  console.log(req.body);
   const plantExist = await Plant.exists({ _id: id });
   if (!plantExist)
     return res.status(400).json({ error: `Cannot find plant with id ${id}` });
@@ -212,6 +211,6 @@ exports.deletePlant = async (req, res) => {
       message: `Plant with id ${id} was deleted successfully`,
     });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error when deleting plant' }, error);
+    res.status(500).json({ message: 'Internal server error when deleting plant', error });
   }
 };
