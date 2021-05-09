@@ -149,9 +149,10 @@ exports.updatePlantCare = async (req, res) => {
          'watering.waterNext': waterNext,
          'watering.lastWateredBy': user.name,
          'watering.lastWateredDate': Date.now(),
+         'watering.lastPostponedReason': lastPostponedReason
+            ? lastPostponedReason
+            : 'No reason given', // for now this is the best option, need to test maxLength more (currently not working)
       };
-      if (lastPostponedReason)
-         updatedPlant = { 'watering.lastPostponedReason': lastPostponedReason };
    }
 
    if (fertNext) {
@@ -159,9 +160,10 @@ exports.updatePlantCare = async (req, res) => {
          'fertilization.fertNext': fertNext,
          'fertilization.lastFertBy': user.name,
          'fertilization.lastFertDate': Date.now(),
+         'fertilization.lastPostponedReason': lastPostponedReason
+            ? lastPostponedReason
+            : 'No reason given',
       };
-      if (lastPostponedReason)
-         updatedPlant = { 'fertilization.lastPostponedReason': lastPostponedReason };
    }
    try {
       // decode token to get role and user id
@@ -170,9 +172,8 @@ exports.updatePlantCare = async (req, res) => {
          {
             _id: id,
          },
-         {
-            $set: updatedPlant,
-         }
+         updatedPlant,
+         { upsert: true }
       );
       return res.status(200).json({
          message: 'Plant updated',

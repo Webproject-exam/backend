@@ -48,7 +48,7 @@ const plantSchema = new mongoose.Schema(
          waterNext: {
             type: Date,
             trim: true,
-            min: Date.now()
+            min: Date.now(),
          },
          waterAmount: {
             type: String,
@@ -69,7 +69,7 @@ const plantSchema = new mongoose.Schema(
             type: String,
             trim: true,
             default: 'No reason given',
-            maxLength: 200
+            maxLength: 200,
          },
       },
       fertilization: {
@@ -81,7 +81,7 @@ const plantSchema = new mongoose.Schema(
          fertNext: {
             type: Date,
             trim: true,
-            min: Date.now()
+            min: Date.now(),
          },
          fertAmount: {
             type: String,
@@ -102,7 +102,7 @@ const plantSchema = new mongoose.Schema(
             type: String,
             trim: true,
             default: 'No reason given',
-            maxLength: 200
+            maxLength: 200,
          },
       },
       information: {
