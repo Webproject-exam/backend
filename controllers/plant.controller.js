@@ -33,7 +33,6 @@ exports.getPlant = async (req, res) => {
          [
             'name',
             'lighting',
-            'responsible',
             'placement',
             'watering',
             'fertilization',
@@ -70,7 +69,7 @@ exports.waterPlant = async (req, res) => {
          error: 'Unauthorized',
       });
 
-   if (!role == 'manager' || !role === 'gardener')
+   if (!role === 'manager' || !role === 'gardener')
       return res.status(401).send({
          error: 'Unauthorized',
       });
@@ -84,7 +83,7 @@ exports.waterPlant = async (req, res) => {
       updatedPlant = {
          'watering.waterNext': waterNext,
          'watering.lastWateredBy': `${user.name} ${user.surname}`,
-         'watering.lastWateredDate': Date.now()
+         'watering.lastWateredDate': Date.now(),
       };
    }
    if (fertNext) {
@@ -153,6 +152,16 @@ exports.updatePlantCare = async (req, res) => {
       };
       if (lastPostponedReason)
          return { 'watering.lastPostponedReason': lastPostponedReason };
+   }
+
+   if (fertNext) {
+      updatedPlant = {
+         'fertilization.fertNext': fertNext,
+         'fertilization.lastFertBy': user.name,
+         'fertilization.lastFertDate': Date.now(),
+      };
+      if (lastPostponedReason)
+         return { 'fertilization.lastPostponedReason': lastPostponedReason };
    }
    try {
       // decode token to get role and user id

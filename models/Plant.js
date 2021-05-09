@@ -7,10 +7,6 @@ const plantSchema = new mongoose.Schema(
          required: true,
          trim: true,
       },
-      responsible: {
-         type: String,
-         trim: true,
-      },
       lighting: {
          type: String,
          trim: true,
@@ -35,7 +31,7 @@ const plantSchema = new mongoose.Schema(
             max: 4,
             min: 1,
             required: true,
-            default: 1
+            default: 1,
          },
          room: {
             type: String,
@@ -59,7 +55,7 @@ const plantSchema = new mongoose.Schema(
             required: true,
             trim: true,
             enum: ['plentiful', 'average', 'sparse'],
-            default: 'plentiful'
+            default: 'plentiful',
          },
          lastWateredBy: {
             type: String,
@@ -92,7 +88,7 @@ const plantSchema = new mongoose.Schema(
             required: true,
             trim: true,
             enum: ['plentiful', 'average', 'sparse'],
-            default: 'plentiful'
+            default: 'plentiful',
          },
          lastFertBy: {
             type: String,
