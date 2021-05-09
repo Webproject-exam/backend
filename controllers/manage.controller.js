@@ -170,11 +170,9 @@ exports.updatePlant = async (req, res) => {
 
    if (!req.body) req.status(400).json({ error: 'Body cannot be empty' });
 
-   const plantExist = Plant.exists({ _id: id });
-   if (!plantExist)
-      return res.status(400).json({ error: `Plant with ${id} does not exist` });
+   const plant = await Plant.findOne({ _id: id });
+   if (!plant) return res.status(400).json({ error: `Plant with ${id} does not exist` });
 
-   console.log(waterFrequency);
    const updatedPlant = {
       name,
       lighting,
@@ -183,11 +181,17 @@ exports.updatePlant = async (req, res) => {
          waterFrequency,
          waterAmount,
          waterNext,
+         lastWateredBy: plant.watering.lastWateredBy,
+         lastWateredDate: plant.watering.lastWateredDate,
+         lastPostponedReason: plant.watering.lastPostponedReason,
       },
       fertilization: {
          fertFrequency,
          fertAmount,
          fertNext,
+         lastFertBy: plant.fertilization.lastFertBy,
+         lastFertDate: plant.fertilization.lastFertDate,
+         lastPostponedReason: plant.fertilization.lastPostponedReason,
       },
       information,
    };
