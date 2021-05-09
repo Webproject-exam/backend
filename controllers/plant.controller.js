@@ -9,6 +9,7 @@ exports.getAllPlants = async (req, res) => {
          'placement',
          'watering.waterNext',
          'watering.waterFrequency',
+         'watering.waterAmount',
          'lighting',
          'fertilization.fertAmount',
          'fertilization.fertFrequency',
