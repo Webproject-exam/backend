@@ -110,7 +110,7 @@ exports.waterPlant = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send({
-      error: 'Internal server error when updating plant',
+      message: 'Internal server error when updating plant',
       error,
     });
   }
@@ -169,7 +169,7 @@ exports.updatePlantCare = async (req, res) => {
       'fertilization.lastFertDate': Date.now(),
       'fertilization.lastPostponedReason': lastPostponedReason
         ? lastPostponedReason
-        : 'No reason given',
+        : 'No reason given', // for now this is the best option, need to test maxLength more (currently not working)
     };
   }
   try {
@@ -183,7 +183,7 @@ exports.updatePlantCare = async (req, res) => {
     res.status(200).json({ message: 'Plant updated' });
   } catch (error) {
     res.status(500).send({
-      error: 'Internal server error when updating plant',
+      message: 'Internal server error when updating plant',
       error,
     });
   }

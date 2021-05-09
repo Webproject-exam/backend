@@ -33,9 +33,16 @@ router.patch('/', waterPlant);
  * PATCH
  * req.params = id
  * req.body =
- *						waterNext
- *					  fertNext
- *					  lastPostponedReason
+ *            name,
+ *            information,
+ *            lighting,
+ *            fertAmount,
+ *            fertFrequency,
+ *            fertNext,
+ *            placement,
+ *            waterAmount,
+ *            waterFrequency,
+ *            waterNext,
  */
 router.patch('/:id', updatePlantCare);
 
