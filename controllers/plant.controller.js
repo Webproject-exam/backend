@@ -13,7 +13,7 @@ exports.getAllPlants = async (req, res) => {
          'fertilization.fertAmount',
          'fertilization.fertFrequency',
          'fertilization.fertNext',
-         'information'
+         'information',
       ]);
       res.status(200).json(allPlants);
    } catch (error) {
@@ -151,7 +151,7 @@ exports.updatePlantCare = async (req, res) => {
          'watering.lastWateredDate': Date.now(),
       };
       if (lastPostponedReason)
-         return { 'watering.lastPostponedReason': lastPostponedReason };
+         updatedPlant = { 'watering.lastPostponedReason': lastPostponedReason };
    }
 
    if (fertNext) {
@@ -161,7 +161,7 @@ exports.updatePlantCare = async (req, res) => {
          'fertilization.lastFertDate': Date.now(),
       };
       if (lastPostponedReason)
-         return { 'fertilization.lastPostponedReason': lastPostponedReason };
+         updatedPlant = { 'fertilization.lastPostponedReason': lastPostponedReason };
    }
    try {
       // decode token to get role and user id
