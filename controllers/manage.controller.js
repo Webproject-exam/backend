@@ -1,7 +1,6 @@
 const UserModel = require('../models/User');
 const Plant = require('../models/Plant');
 const bcrypt = require('bcryptjs');
-const addDays = require('date-fns/addDays');
 
 //
 // @USER
