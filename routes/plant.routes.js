@@ -1,9 +1,9 @@
 const express = require('express');
 const {
-   getAllPlants,
-   getPlant,
-   waterPlant,
-   updatePlantCare,
+  getAllPlants,
+  getPlant,
+  waterPlant,
+  updatePlantCare,
 } = require('../controllers/plant.controller');
 
 const router = express.Router();

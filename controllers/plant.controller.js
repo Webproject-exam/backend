@@ -140,6 +140,12 @@ exports.updatePlantCare = async (req, res) => {
       error: 'Unauthorized',
     });
 
+  // lastPostponed is not required so not checking for it
+  if (!waterNext && !fertNext)
+    return res
+      .status(401)
+      .json({ error: 'Watering or fertilization field cannot be empty' });
+
   //finds user in DB to find name
   const user = await User.findOne({
     _id,
@@ -167,8 +173,6 @@ exports.updatePlantCare = async (req, res) => {
     };
   }
   try {
-    // decode token to get role and user id
-    // Update plant based on id
     await Plant.updateOne(
       {
         _id: id,
@@ -176,9 +180,7 @@ exports.updatePlantCare = async (req, res) => {
       updatedPlant,
       { upsert: true }
     );
-    return res.status(200).json({
-      message: 'Plant updated',
-    });
+    res.status(200).json({ message: 'Plant updated' });
   } catch (error) {
     res.status(500).send({
       error: 'Internal server error when updating plant',
