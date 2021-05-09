@@ -156,14 +156,16 @@ exports.createPlant = async (req, res) => {
 exports.updatePlant = async (req, res) => {
    const {
       id,
-      waterFrequency,
-      waterAmount,
-      fertFrequency,
-      fertAmount,
       name,
-      lighting,
-      placement,
       information,
+      lighting,
+      fertAmount,
+      fertFrequency,
+      fertNext,
+      placement,
+      waterAmount,
+      waterFrequency,
+      waterNext,
    } = req.body;
 
    if (!req.body) req.status(400).json({ error: 'Body cannot be empty' });
@@ -180,10 +182,12 @@ exports.updatePlant = async (req, res) => {
       watering: {
          waterFrequency,
          waterAmount,
+         waterNext,
       },
       fertilization: {
          fertFrequency,
          fertAmount,
+         fertNext,
       },
       information,
    };
