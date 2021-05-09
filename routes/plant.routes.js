@@ -1,5 +1,10 @@
 const express = require('express');
-const {getAllPlants, getPlant, waterPlant, updatePlantCare} = require('../controllers/plant.controller');
+const {
+   getAllPlants,
+   getPlant,
+   waterPlant,
+   updatePlantCare,
+} = require('../controllers/plant.controller');
 
 const router = express.Router();
 
@@ -17,15 +22,21 @@ router.get('/:id', getPlant);
 
 /**
  * PATCH
- * req.params = id
  * req.body =
- * 						lastPostponedReason,
- * 						lastWateredBy,
- *						lastWateredDate,
+ *            selectedPlant
  *						waterNext
+ *					  fertNext
  */
 router.patch('/', waterPlant);
 
+/**
+ * PATCH
+ * req.params = id
+ * req.body =
+ *						waterNext
+ *					  fertNext
+ *					  lastPostponedReason
+ */
 router.patch('/:id', updatePlantCare);
 
 module.exports = router;
