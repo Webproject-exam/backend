@@ -20,6 +20,7 @@ const plantSchema = new mongoose.Schema(
       ],
       default: 'sunlight',
     },
+    lastRequestedDate: Date,
     placement: {
       building: {
         type: String,
