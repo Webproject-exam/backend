@@ -1,7 +1,7 @@
 const Plant = require('../models/Plant');
 const User = require('../models/User');
 const jwtDecode = require('jwt-decode');
-const dateFns = require('date-fns');
+const { parseISO, isToday } = require('date-fns');
 
 exports.getAllPlants = async (req, res) => {
   try {
@@ -196,7 +196,7 @@ exports.updatePlantCare = async (req, res) => {
 exports.requestPlant = async (req, res) => {
   const { id, date } = req.body;
 
-  if (!dateFns.isToday(dateFns.parseISO(date))) {
+  if (!isToday(parseISO(date))) {
     return res.status(400).json({ error: 'Date is not today' });
   }
 
