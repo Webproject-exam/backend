@@ -196,7 +196,7 @@ exports.updatePlantCare = async (req, res) => {
 exports.requestPlant = async (req, res) => {
   const { id, date } = req.body;
 
-  if (!isToday(parseISO(date)) || !isPast(parseISO(date))) {
+  if (!isToday(parseISO(date)) || isPast(parseISO(date))) {
     return res.status(400).json({ error: 'Date is not today' });
   }
 
