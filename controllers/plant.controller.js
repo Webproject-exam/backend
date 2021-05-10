@@ -1,6 +1,7 @@
 const Plant = require('../models/Plant');
 const User = require('../models/User');
 const jwtDecode = require('jwt-decode');
+const dateFns = require('date-fns');
 
 exports.getAllPlants = async (req, res) => {
   try {
@@ -16,7 +17,7 @@ exports.getAllPlants = async (req, res) => {
       'fertilization.fertFrequency',
       'fertilization.fertNext',
       'information',
-      'createdAt'
+      'createdAt',
     ]);
     res.status(200).json(allPlants);
   } catch (error) {
@@ -41,7 +42,7 @@ exports.getPlant = async (req, res) => {
         'fertilization',
         'information',
         'createdAt',
-        'lastRequestedDate'
+        'lastRequestedDate',
       ]
     );
     res.status(200).json({
@@ -184,6 +185,30 @@ exports.updatePlantCare = async (req, res) => {
       { upsert: true }
     );
     res.status(200).json({ message: 'Plant updated' });
+  } catch (error) {
+    res.status(500).send({
+      message: 'Internal server error when updating plant',
+      error,
+    });
+  }
+};
+
+exports.requestPlant = async (req, res) => {
+  const { id, date } = req.body;
+
+  if (!dateFns.isToday(dateFns.parseISO(date))) {
+    return res.status(400).json({ error: 'Date is not today' });
+  }
+
+  try {
+    await Plant.updateOne(
+      {
+        _id: id,
+      },
+      { lastRequestedDate: Date.now() },
+      { upsert: true }
+    );
+    res.status(200).json({ message: 'Plant success' });
   } catch (error) {
     res.status(500).send({
       message: 'Internal server error when updating plant',

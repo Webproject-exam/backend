@@ -4,6 +4,7 @@ const {
   getPlant,
   waterPlant,
   updatePlantCare,
+  requestPlant,
 } = require('../controllers/plant.controller');
 
 const router = express.Router();
@@ -22,12 +23,9 @@ router.get('/:id', getPlant);
 
 /**
  * PATCH
- * req.body =
- *            selectedPlant
- *						waterNext
- *					  fertNext
+ * req.body = id
  */
-router.patch('/', waterPlant);
+router.patch('/request', requestPlant);
 
 /**
  * PATCH
@@ -45,5 +43,14 @@ router.patch('/', waterPlant);
  *            waterNext,
  */
 router.patch('/:id', updatePlantCare);
+
+/**
+ * PATCH
+ * req.body =
+ *            selectedPlant
+ *						waterNext
+ *					  fertNext
+ */
+router.patch('/', waterPlant);
 
 module.exports = router;
