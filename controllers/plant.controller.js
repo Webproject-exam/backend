@@ -10,11 +10,13 @@ exports.getAllPlants = async (req, res) => {
       'watering.waterNext',
       'watering.waterFrequency',
       'watering.waterAmount',
+      'watering.lastWateredDate',
       'lighting',
       'fertilization.fertAmount',
       'fertilization.fertFrequency',
       'fertilization.fertNext',
       'information',
+      'createdAt'
     ]);
     res.status(200).json(allPlants);
   } catch (error) {
@@ -39,6 +41,7 @@ exports.getPlant = async (req, res) => {
         'fertilization',
         'information',
         'createdAt',
+        'lastRequestedDate'
       ]
     );
     res.status(200).json({
