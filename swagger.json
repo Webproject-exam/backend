@@ -33,7 +33,7 @@
       "description": "User profile"
     },
     {
-      "name": "Dashboard",
+      "name": "Manage",
       "description": "Manager dashboard"
     },
     {
@@ -378,7 +378,7 @@
     },
     "/dashboard": {
       "post": {
-        "tags": ["Dashboard"],
+        "tags": ["Manage"],
         "summary": "Create a user",
         "description": "Manager can create a new user using name, surname, role, email and password",
         "operationId": "createUser",
@@ -448,7 +448,7 @@
         ]
       },
       "get": {
-        "tags": ["Dashboard"],
+        "tags": ["Manage"],
         "summary": "Get a list of all users",
         "description": "Manager gets all users",
         "operationId": "getUsers",
@@ -511,7 +511,7 @@
         ]
       },
       "patch": {
-        "tags": ["Dashboard"],
+        "tags": ["Manage"],
         "summary": "Update another user",
         "description": "Manager updates a user",
         "operationId": "updateUserManager",
@@ -590,7 +590,7 @@
         ]
       },
       "delete": {
-        "tags": ["Dashboard"],
+        "tags": ["Manage"],
         "summary": "Delete a user",
         "description": "Manager deletes a user",
         "operationId": "deleteUser",

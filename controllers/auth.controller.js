@@ -38,7 +38,7 @@ exports.login = async (req, res) => {
     res
       .status(500)
       .json({error: 'There was a server-side error with login', error});
-      console.log(error);
+    console.log(error);
   }
 };
 
@@ -112,11 +112,20 @@ exports.refreshToken = async (req, res) => {
 // helper functions
 function setTokenCookie(res, token) {
   // Create cookie with refresh token that expires in 7 days
+
+  //@DEPLOYCOOKIE
+  // const cookieOptions = {
+  //   httpOnly: true,
+  //   expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  //   secure: true,
+  //   sameSite: 'none',
+  // };
+
+  //@DEVELOPMENT
   const cookieOptions = {
     httpOnly: true,
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    secure: true,
-    sameSite: 'none',
+    secure: false,
   };
   res.cookie('refreshToken', token, cookieOptions);
 }
@@ -128,7 +137,7 @@ async function getRefreshToken(token) {
 }
 
 function generateJwtToken(user) {
-  return jwt.sign({_id: user.id}, process.env.TOKEN_SECRET, {
+  return jwt.sign({_id: user.id, role: user.role}, process.env.TOKEN_SECRET, {
     expiresIn: '15m',
   });
 }
