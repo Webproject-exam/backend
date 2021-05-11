@@ -81,6 +81,4 @@ router.patch('/plants', updatePlant);
  */
 router.delete('/plants', deletePlant);
 
-router.post('/image-upload', imageUpload);
-
 module.exports = router;

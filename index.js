@@ -18,19 +18,13 @@ const profileRoute = require('./routes/profile.routes');
 const resetRoute = require('./routes/email.routes');
 const authRoute = require('./routes/auth.routes');
 const plantRoute = require('./routes/plant.routes');
-const cloudinary = require('cloudinary').v2;
 const formData = require('express-form-data');
-// Middlewares
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
-});
 
+// Middlewares
 // parse request of content-type - application/json
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 // parse request of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 // read cookie information
 app.use(cookieParser());
 // Not whitelisted atm, this is for development purposes

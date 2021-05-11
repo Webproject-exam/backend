@@ -21,6 +21,10 @@ const plantSchema = new mongoose.Schema(
       default: 'sunlight',
     },
     lastRequestedDate: Date,
+    image: {
+      type: String,
+      trim: true,
+    },
     placement: {
       building: {
         type: String,
