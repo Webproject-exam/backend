@@ -10,11 +10,7 @@ exports.transporter = nodemailer.createTransport({
   },
 });
 
-if (
-  process.env &&
-  process.env.NODE_ENV &&
-  process.env.NODE_ENV === 'production'
-) {
+if (process.env && process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
   exports.getPasswordResetUrl = (user, token) =>
     `https://fullstackwebproject.herokuapp.com/reset_password/reset/${user._id}/${token}`;
 } else {
@@ -34,5 +30,20 @@ exports.resetPasswordTemplate = (user, url) => {
   <p>Best regards,</p>
   <p>Fullstack project team</p>
   `;
-  return {from, to, subject, html};
+  return { from, to, subject, html };
+};
+
+exports.sendEmailToGardernersTemplate = (emailsArray, url) => {
+  const from = process.env.EMAIL_LOGIN;
+  const to = emailsArray;
+  const subject = 'Noreply Simple careplant email here';
+
+  const html = `
+  <p>Hello all gardeners</p>
+  <p>This is a noreply email, somebody has just requested watering</p>
+  <p>Plant url is here ${url}</p>
+  <p>Best regards,</p>
+  <p>Managers</p>
+  `;
+  return { from, to, subject, html };
 };

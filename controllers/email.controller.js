@@ -4,13 +4,14 @@ const {
   transporter,
   getPasswordResetUrl,
   resetPasswordTemplate,
+  sendEmailToGardernersTemplate,
 } = require('../auth/email');
 const UserModel = require('../models/User');
 
 // Helper function for sending email
 const UsePasswordHashToMakeToken = (password, userId, createdAt) => {
   const secret = `${password}-${createdAt}`;
-  const token = jwt.sign({userId}, secret, {
+  const token = jwt.sign({ userId }, secret, {
     expiresIn: 3600, // 1 hour
   });
 
@@ -21,14 +22,10 @@ exports.sendPasswordResetEmail = async (req, res) => {
   const email = req.body.userEmail;
 
   // Checks if user with email is in db
-  const user = await UserModel.findOne({email}).exec();
-  if (!user) return res.status(200).json({message: 'Email sent'}); // to prevent leaking information we send same as line 40
+  const user = await UserModel.findOne({ email }).exec();
+  if (!user) return res.status(200).json({ message: 'Email sent' }); // to prevent leaking information we send same as line 40
   // Uses helper function to create token using password and createdAt with 1 hour expiration date
-  const token = UsePasswordHashToMakeToken(
-    user.passwordHash,
-    user._id,
-    user.createdAt
-  );
+  const token = UsePasswordHashToMakeToken(user.passwordHash, user._id, user.createdAt);
 
   const url = getPasswordResetUrl(user, token); // `http://localhost:5000/reset_password/reset/${user._id}/${token}`
   // Uses predefined email template
@@ -37,45 +34,62 @@ exports.sendPasswordResetEmail = async (req, res) => {
   //  Sends email using template
   try {
     const info = await transporter.sendMail(emailTemplate);
-    res.status(200).json({message: 'Email sent'});
+    res.status(200).json({ message: 'Email sent' });
     console.log(`** Email Sent **`, info.response);
   } catch (error) {
-    res.status(500).json({message: 'Error sending mail', error});
+    res.status(500).json({ message: 'Error sending mail', error });
   }
 };
 
 exports.recieveNewPassword = async (req, res) => {
-  const {userId, token} = req.params;
-  const {password} = req.body;
+  const { userId, token } = req.params;
+  const { password } = req.body;
 
   // Finds user based on userID from params
-  const user = await UserModel.findOne({_id: userId});
-  if (!user) return res.status(404).json({message: 'invalid user'});
+  const user = await UserModel.findOne({ _id: userId });
+  if (!user) return res.status(404).json({ message: 'invalid user' });
 
   // defines what the secret is and decodes to validate
   // Validates userID from url and database
   const secret = `${user.password}-${user.createdAt}`;
   const payload = jwt.decode(token, secret);
   if (payload.userId !== user.id) {
-    return res.status(404).json({error: 'invalid user'});
+    return res.status(404).json({ error: 'invalid user' });
   }
 
   // Hashes new password and updates the user in db using userID
   try {
     const hash = bcrypt.hashSync(password, 10);
 
-    await UserModel.findOneAndUpdate({_id: userId}, {password: hash});
+    await UserModel.findOneAndUpdate({ _id: userId }, { password: hash });
 
-    if (
-      process.env &&
-      process.env.NODE_ENV &&
-      process.env.NODE_ENV === 'production'
-    ) {
+    if (process.env && process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
       return res.redirect(`${process.env.FRONTENDHOST}/login`); // for production
     } else {
-      return res.status(202).json({message: 'Password changed accepted'}); // for development
+      return res.status(202).json({ message: 'Password changed accepted' }); // for development
     }
   } catch (error) {
-    res.status(500).send({message: 'Error reciveing new password', error});
+    res.status(500).send({ message: 'Error reciveing new password', error });
+  }
+};
+
+exports.sendEmailToGardeners = async (req, res) => {
+  const plantId = req.body.id;
+  const plantUrl = `${process.env.FRONTENDHOST}/plants/${plantId}`;
+  const users = await UserModel.find({}, 'role email');
+  let emailsArray = [];
+  users.map(user => {
+    if (user.role === 'gardener') {
+      emailsArray.push(user.email);
+    }
+  });
+  const emailTemplate = sendEmailToGardernersTemplate(emailsArray, plantUrl);
+  try {
+    console.log(emailTemplate);
+    const info = await transporter.sendMail(emailTemplate);
+    res.status(200).json({ message: 'Email to gardeners sent' });
+    console.log(`** Email to gardeners sent **`, info.response);
+  } catch (error) {
+    res.status(500).json({ message: 'Error sending mail', error });
   }
 };
