@@ -9,6 +9,7 @@ exports.getAllPlants = async (req, res) => {
     const allPlants = await Plant.find({}, [
       'name',
       'placement',
+      'image',
       'watering.waterNext',
       'watering.waterFrequency',
       'watering.waterAmount',
@@ -39,6 +40,7 @@ exports.getPlant = async (req, res) => {
         'name',
         'lighting',
         'placement',
+        'image',
         'watering',
         'fertilization',
         'information',

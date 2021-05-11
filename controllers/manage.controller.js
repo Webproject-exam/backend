@@ -3,9 +3,7 @@ const Plant = require('../models/Plant');
 const bcrypt = require('bcryptjs');
 const merge = require('deepmerge');
 
-const cloudinary = require('cloudinary');
-const formData = require('express-form-data');
-
+const { cloudinary } = require('../helpers/cloudinary.config');
 //
 // @USER
 //
@@ -129,7 +127,16 @@ exports.deleteUser = async (req, res) => {
 //
 
 exports.createPlant = async (req, res) => {
-  const { name, lighting, information, placement, watering, fertilization } = req.body;
+  const {
+    name,
+    lighting,
+    information,
+    placement,
+    watering,
+    fertilization,
+    image,
+  } = req.body;
+
   // validate fields
   if (!name || !placement || !watering || !fertilization || !lighting) {
     return res.status(400).json({
@@ -137,9 +144,14 @@ exports.createPlant = async (req, res) => {
     });
   }
 
+  const { public_id } = await cloudinary.uploader.upload(image, {
+    upload_preset: 'webproject',
+  });
+
   const plant = new Plant({
     name,
     lighting,
+    image: image ? public_id : 'plants/cflhg7mdqmrfcucabwdi', // default image url
     placement,
     watering,
     fertilization,
@@ -222,10 +234,10 @@ exports.deletePlant = async (req, res) => {
 // @IMAGE
 //
 
-exports.imageUpload = async (req, res) => {
-  console.log(req);
-  const values = Object.values(req.files);
-  const promises = values.map(image => cloudinary.uploader.upload(image.path));
-
-  Promise.all(promises).then(results => res.json(results));
-};
+// exports.imageUpload = async (req, res) => {
+//   console.log(req);
+//   const values = Object.values(req.files);
+//   const promises = values.map(image => cloudinary.uploader.upload(image.path));
+//
+//   Promise.all(promises).then(results => res.json(results));
+// };
