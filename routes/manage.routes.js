@@ -7,6 +7,7 @@ const {
   createPlant,
   updatePlant,
   deletePlant,
+  imageUpload,
 } = require('../controllers/manage.controller');
 
 const router = express.Router();
@@ -79,5 +80,7 @@ router.patch('/plants', updatePlant);
  *	req.params = id
  */
 router.delete('/plants', deletePlant);
+
+router.post('/image-upload', imageUpload);
 
 module.exports = router;
