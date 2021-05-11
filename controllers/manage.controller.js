@@ -3,6 +3,9 @@ const Plant = require('../models/Plant');
 const bcrypt = require('bcryptjs');
 const merge = require('deepmerge');
 
+const cloudinary = require('cloudinary');
+const formData = require('express-form-data');
+
 //
 // @USER
 //
@@ -213,4 +216,16 @@ exports.deletePlant = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Internal server error when deleting plant', error });
   }
+};
+
+//
+// @IMAGE
+//
+
+exports.imageUpload = async (req, res) => {
+  console.log(req);
+  const values = Object.values(req.files);
+  const promises = values.map(image => cloudinary.uploader.upload(image.path));
+
+  Promise.all(promises).then(results => res.json(results));
 };
