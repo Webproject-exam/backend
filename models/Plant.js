@@ -66,6 +66,10 @@ const plantSchema = new mongoose.Schema(
         type: Date,
         trim: true,
       },
+      lastPostponedBy: {
+        type: String,
+        trim: true,
+      },
       lastPostponedReason: {
         type: String,
         trim: true,
@@ -96,6 +100,10 @@ const plantSchema = new mongoose.Schema(
       },
       lastFertDate: {
         type: Date,
+        trim: true,
+      },
+      lastPostponedBy: {
+        type: String,
         trim: true,
       },
       lastPostponedReason: {
