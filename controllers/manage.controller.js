@@ -3,6 +3,7 @@ const Plant = require('../models/Plant');
 const bcrypt = require('bcryptjs');
 const merge = require('deepmerge');
 
+const { cloudinary } = require('../helpers/cloudinary.config');
 //
 // @USER
 //
@@ -126,17 +127,34 @@ exports.deleteUser = async (req, res) => {
 //
 
 exports.createPlant = async (req, res) => {
-  const { name, lighting, information, placement, watering, fertilization } = req.body;
+  const {
+    name,
+    lighting,
+    information,
+    placement,
+    watering,
+    fertilization,
+    image,
+  } = req.body;
+
   // validate fields
   if (!name || !placement || !watering || !fertilization || !lighting) {
     return res.status(400).json({
       error: 'name, placement, watering, fertilization and lighting is required',
     });
   }
+  let setImage;
+  if (image) {
+    const { public_id } = await cloudinary.uploader.upload(image, {
+      upload_preset: 'webproject',
+    });
+    setImage = public_id;
+  }
 
   const plant = new Plant({
     name,
     lighting,
+    image: image ? setImage : 'plants/cflhg7mdqmrfcucabwdi', // default image url
     placement,
     watering,
     fertilization,
@@ -214,3 +232,15 @@ exports.deletePlant = async (req, res) => {
     res.status(500).json({ message: 'Internal server error when deleting plant', error });
   }
 };
+
+//
+// @IMAGE
+//
+
+// exports.imageUpload = async (req, res) => {
+//   console.log(req);
+//   const values = Object.values(req.files);
+//   const promises = values.map(image => cloudinary.uploader.upload(image.path));
+//
+//   Promise.all(promises).then(results => res.json(results));
+// };
