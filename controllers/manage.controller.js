@@ -144,9 +144,11 @@ exports.createPlant = async (req, res) => {
     });
   }
 
-  const { public_id } = await cloudinary.uploader.upload(image, {
-    upload_preset: 'webproject',
-  });
+  if (image) {
+    const { public_id } = await cloudinary.uploader.upload(image, {
+      upload_preset: 'webproject',
+    });
+  }
 
   const plant = new Plant({
     name,
