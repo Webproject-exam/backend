@@ -143,17 +143,18 @@ exports.createPlant = async (req, res) => {
       error: 'name, placement, watering, fertilization and lighting is required',
     });
   }
-
+  let setImage;
   if (image) {
     const { public_id } = await cloudinary.uploader.upload(image, {
       upload_preset: 'webproject',
     });
+    setImage = public_id;
   }
 
   const plant = new Plant({
     name,
     lighting,
-    image: image ? public_id : 'plants/cflhg7mdqmrfcucabwdi', // default image url
+    image: image ? setImage : 'plants/cflhg7mdqmrfcucabwdi', // default image url
     placement,
     watering,
     fertilization,
