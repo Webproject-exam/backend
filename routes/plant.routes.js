@@ -52,5 +52,4 @@ router.patch('/:id', updatePlantCare);
  *					  fertNext
  */
 router.patch('/', waterPlant);
-
 module.exports = router;
