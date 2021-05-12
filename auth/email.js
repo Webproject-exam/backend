@@ -14,7 +14,7 @@ exports.smtpTrans = nodemailer.createTransport(
         clientSecret: process.env.CLIENT_SECRET,
         refreshToken: process.env.CLIENT_REFRESH_TOKEN,
         accessToken: process.env.CLIENT_ACCESS_TOKEN,
-        expires: 1784314697598,
+        expires_in: 1784314697598,
       }),
     },
   })
