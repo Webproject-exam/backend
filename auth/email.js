@@ -5,11 +5,12 @@ require('dotenv').config();
 exports.transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_LOGIN,
-    pass: process.env.EMAIL_PASSWORD,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    refreshToken: process.env.CLIENT_REFRESH_TOKEN,
+    XOAuth2: {
+      user: process.env.EMAIL_LOGIN,
+      clientId: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      refreshToken: process.env.CLIENT_REFRESH_TOKEN,
+    },
   },
 });
 
