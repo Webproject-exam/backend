@@ -198,10 +198,6 @@ exports.requestPlant = async (req, res) => {
   const { id, date } = req.body;
   const plantUrl = `${process.env.FRONTENDHOST}/plants/${id}`;
 
-  if (!isToday(parseISO(date))) {
-    return res.status(400).json({ error: 'Date is not today' });
-  }
-
   const users = await User.find({}, 'role email');
   let emailsArray = [];
   users.map(user => {
