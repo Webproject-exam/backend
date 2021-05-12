@@ -7,7 +7,6 @@ const {
   createPlant,
   updatePlant,
   deletePlant,
-  imageUpload,
 } = require('../controllers/manage.controller');
 
 const router = express.Router();
