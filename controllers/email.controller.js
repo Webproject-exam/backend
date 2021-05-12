@@ -85,8 +85,7 @@ exports.sendEmailToGardeners = async (req, res) => {
   });
   const emailTemplate = sendEmailToGardernersTemplate(emailsArray, plantUrl);
   try {
-    console.log(emailTemplate);
-    const info = await transporter.sendMail(emailTemplate);
+    const info = await smtpTrans.sendMail(emailTemplate);
     res.status(200).json({ message: 'Email to gardeners sent' });
     console.log(`** Email to gardeners sent **`, info.response);
   } catch (error) {
