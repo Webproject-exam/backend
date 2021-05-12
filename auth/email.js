@@ -9,7 +9,7 @@ exports.smtpTrans = nodemailer.createTransport(
     service: 'gmail',
     auth: {
       xoauth2: xoauth2.createXOAuth2Generator({
-        user: process.env.EMAIL_LOGIN,
+        user: process.env.EMAIL_CREDENTIALS,
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
         refreshToken: process.env.CLIENT_REFRESH_TOKEN,
