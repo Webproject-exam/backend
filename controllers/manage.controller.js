@@ -189,16 +189,40 @@ exports.updatePlant = async (req, res) => {
     image,
   } = req.body;
 
-  if (!req.body) return res.status(400).json({ error: 'Body cannot be empty' });
+  if (!req.body) {
+    return res.status(400).json({ error: 'Body cannot be empty' });
+  }
+  const plant = await Plant.findOne(
+    { _id: id },
+    'watering fertilization name image -_id'
+  );
 
-  const plant = await Plant.findOne({ _id: id }, 'watering fertilization image -_id');
-  if (!plant) return res.status(400).json({ error: `Plant with ${id} does not exist` });
+  if (!plant) {
+    return res.status(400).json({ error: `Plant with ${id} does not exist` });
+  }
+
+  // let plantImage = plant.image;
+
+  let setImage;
+  if (image && plant.image !== 'plants/cflhg7mdqmrfcucabwdi') {
+    await cloudinary.uploader.destroy(plant.image, {
+      upload_preset: 'webproject',
+    });
+  }
+
+  if (image) {
+    const { public_id } = await cloudinary.uploader.upload(image, {
+      upload_preset: 'webproject',
+      quality: 60,
+    });
+    setImage = public_id;
+  }
 
   const updatedPlant = {
     name,
     lighting,
     placement,
-    image,
+    image: image ? setImage : plant.image, // same image as before update
     watering: {
       waterFrequency,
       waterAmount,
@@ -226,7 +250,7 @@ exports.deletePlant = async (req, res) => {
   if (!plant) return res.status(400).json({ error: `Cannot find plant with id ${id}` });
 
   console.log(plant.image);
-  if (plant.image !== 'plants/cflhg7mdqmrfcucabwdi') {
+  if (plant.image !== 'plants/cflhg7mdqmrfcucabwdi' && plant.image !== null) {
     await cloudinary.uploader.destroy(plant.image, {
       upload_preset: 'webproject',
     });
