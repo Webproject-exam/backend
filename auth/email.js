@@ -31,7 +31,7 @@ if (process.env && process.env.NODE_ENV && process.env.NODE_ENV === 'production'
 exports.resetPasswordTemplate = (user, url) => {
   const from = process.env.EMAIL_CREDENTIALS;
   const to = user.email;
-  const subject = 'Noreply Simple reset password';
+  const subject = 'Reset password';
   const html = `
   <p>Hey ${user.name || user.email},</p>
   <p>This is a noreply email where you can reset password</p>
@@ -46,7 +46,7 @@ exports.resetPasswordTemplate = (user, url) => {
 exports.sendEmailToGardernersTemplate = (emailsArray, url) => {
   const from = process.env.EMAIL_CREDENTIALS;
   const to = emailsArray;
-  const subject = 'Noreply Simple careplant email here';
+  const subject = 'Someone has requested plant care';
 
   const html = `
   <p>Hello all gardeners</p>
