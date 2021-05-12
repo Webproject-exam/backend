@@ -1,18 +1,24 @@
 const nodemailer = require('nodemailer');
+const xoauth2 = require('xoauth2');
+const smtpTransport = require('nodemailer-smtp-transport');
 
 require('dotenv').config();
 
-exports.transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    XOAuth2: {
-      user: process.env.EMAIL_LOGIN,
-      clientId: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      refreshToken: process.env.CLIENT_REFRESH_TOKEN,
+exports.smtpTrans = nodemailer.createTransport(
+  smtpTransport({
+    service: 'gmail',
+    auth: {
+      xoauth2: xoauth2.createXOAuth2Generator({
+        user: process.env.EMAIL_LOGIN,
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        refreshToken: process.env.CLIENT_REFRESH_TOKEN,
+        accessToken:
+          'ya29.a0AfH6SMC4tG4TNugHxQjnPtXuIdDwEX1tQZprxO-57pPrnk0fCGCqK2DMcei-sx08OJc05kn5mT2TFK_RitKiK4NZpg-Tkrk4hGOFaaQnXhAQyk7YUotrtpFPx8dARWT8-Xl8yuihJwRJ_sbFcMrE026fJb5K',
+      }),
     },
-  },
-});
+  })
+);
 
 if (process.env && process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
   exports.getPasswordResetUrl = (user, token) =>

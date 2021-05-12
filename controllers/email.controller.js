@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {
-  transporter,
+  smtpTrans,
   getPasswordResetUrl,
   resetPasswordTemplate,
   sendEmailToGardernersTemplate,
@@ -33,7 +33,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
 
   //  Sends email using template
   try {
-    const info = await transporter.sendMail(emailTemplate);
+    const info = await smtpTrans.sendMail(emailTemplate);
     res.status(200).json({ message: 'Email sent' });
     console.log(`** Email Sent **`, info.response);
   } catch (error) {
