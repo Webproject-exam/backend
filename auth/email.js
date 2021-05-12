@@ -13,8 +13,8 @@ exports.smtpTrans = nodemailer.createTransport(
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
         refreshToken: process.env.CLIENT_REFRESH_TOKEN,
-        accessToken:
-          'ya29.a0AfH6SMC4tG4TNugHxQjnPtXuIdDwEX1tQZprxO-57pPrnk0fCGCqK2DMcei-sx08OJc05kn5mT2TFK_RitKiK4NZpg-Tkrk4hGOFaaQnXhAQyk7YUotrtpFPx8dARWT8-Xl8yuihJwRJ_sbFcMrE026fJb5K',
+        accessToken: process.env.CLIENT_ACCESS_TOKEN,
+        expires: 1784314697598,
       }),
     },
   })
