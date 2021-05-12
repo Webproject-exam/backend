@@ -1,7 +1,7 @@
 const Plant = require('../models/Plant');
 const User = require('../models/User');
 const jwtDecode = require('jwt-decode');
-const { parseISO, isToday, isPast, startOfDay } = require('date-fns');
+const { parseISO, isToday, startOfDay } = require('date-fns');
 const { transporter, sendEmailToGardernersTemplate } = require('../auth/email');
 
 exports.getAllPlants = async (req, res) => {

@@ -147,6 +147,7 @@ exports.createPlant = async (req, res) => {
   if (image) {
     const { public_id } = await cloudinary.uploader.upload(image, {
       upload_preset: 'webproject',
+      quality: 60,
     });
     setImage = public_id;
   }
@@ -185,17 +186,43 @@ exports.updatePlant = async (req, res) => {
     waterAmount,
     waterFrequency,
     waterNext,
+    image,
   } = req.body;
 
-  if (!req.body) return res.status(400).json({ error: 'Body cannot be empty' });
+  if (!req.body) {
+    return res.status(400).json({ error: 'Body cannot be empty' });
+  }
+  const plant = await Plant.findOne(
+    { _id: id },
+    'watering fertilization name image -_id'
+  );
 
-  const plant = await Plant.findOne({ _id: id }, 'watering fertilization -_id');
-  if (!plant) return res.status(400).json({ error: `Plant with ${id} does not exist` });
+  if (!plant) {
+    return res.status(400).json({ error: `Plant with ${id} does not exist` });
+  }
+
+  // let plantImage = plant.image;
+
+  let setImage;
+  if (image && plant.image !== 'plants/cflhg7mdqmrfcucabwdi') {
+    await cloudinary.uploader.destroy(plant.image, {
+      upload_preset: 'webproject',
+    });
+  }
+
+  if (image) {
+    const { public_id } = await cloudinary.uploader.upload(image, {
+      upload_preset: 'webproject',
+      quality: 60,
+    });
+    setImage = public_id;
+  }
 
   const updatedPlant = {
     name,
     lighting,
     placement,
+    image: image ? setImage : plant.image, // same image as before update
     watering: {
       waterFrequency,
       waterAmount,
@@ -219,9 +246,15 @@ exports.updatePlant = async (req, res) => {
 
 exports.deletePlant = async (req, res) => {
   const { id } = req.body;
-  const plantExist = await Plant.exists({ _id: id });
-  if (!plantExist)
-    return res.status(400).json({ error: `Cannot find plant with id ${id}` });
+  const plant = await Plant.findOne({ _id: id });
+  if (!plant) return res.status(400).json({ error: `Cannot find plant with id ${id}` });
+
+  console.log(plant.image);
+  if (plant.image !== 'plants/cflhg7mdqmrfcucabwdi' && plant.image !== null) {
+    await cloudinary.uploader.destroy(plant.image, {
+      upload_preset: 'webproject',
+    });
+  }
 
   try {
     await Plant.findOneAndDelete({ _id: id });
@@ -232,15 +265,3 @@ exports.deletePlant = async (req, res) => {
     res.status(500).json({ message: 'Internal server error when deleting plant', error });
   }
 };
-
-//
-// @IMAGE
-//
-
-// exports.imageUpload = async (req, res) => {
-//   console.log(req);
-//   const values = Object.values(req.files);
-//   const promises = values.map(image => cloudinary.uploader.upload(image.path));
-//
-//   Promise.all(promises).then(results => res.json(results));
-// };
