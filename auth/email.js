@@ -29,7 +29,7 @@ if (process.env && process.env.NODE_ENV && process.env.NODE_ENV === 'production'
 }
 
 exports.resetPasswordTemplate = (user, url) => {
-  const from = process.env.EMAIL_LOGIN;
+  const from = process.env.EMAIL_CREDENTIALS;
   const to = user.email;
   const subject = 'Noreply Simple reset password';
   const html = `
@@ -44,7 +44,7 @@ exports.resetPasswordTemplate = (user, url) => {
 };
 
 exports.sendEmailToGardernersTemplate = (emailsArray, url) => {
-  const from = process.env.EMAIL_LOGIN;
+  const from = process.env.EMAIL_CREDENTIALS;
   const to = emailsArray;
   const subject = 'Noreply Simple careplant email here';
 
