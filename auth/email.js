@@ -12,10 +12,10 @@ exports.transporter = nodemailer.createTransport({
 
 if (process.env && process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
   exports.getPasswordResetUrl = (user, token) =>
-    `https://fullstackwebproject.herokuapp.com/reset_password/reset/${user._id}/${token}`;
+    `${process.env.BACKEND_URL}/reset_password/reset/${user._id}/${token}`;
 } else {
   exports.getPasswordResetUrl = (user, token) =>
-    `http://localhost:5000/reset_password/reset/${user._id}/${token}`;
+    `http://localhost:${process.env.PORT}/reset_password/reset/${user._id}/${token}`;
 }
 
 exports.resetPasswordTemplate = (user, url) => {
