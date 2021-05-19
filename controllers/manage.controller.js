@@ -35,7 +35,7 @@ exports.createUser = async (req, res) => {
   // Save new user to db
   try {
     await user.save();
-    res.status(200).json({ name, surname, role, email });
+    res.status(201).json({ name, surname, role, email });
   } catch (error) {
     res.status(500).json({ error: 'internal server error when creating user', error });
   }
@@ -165,7 +165,7 @@ exports.createPlant = async (req, res) => {
   // Save new plant to db
   try {
     await plant.save();
-    res.status(200).json({
+    res.status(201).json({
       message: `Plant with name ${plant.name} has been created.`,
     });
   } catch (error) {
