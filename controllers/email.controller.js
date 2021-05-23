@@ -5,7 +5,7 @@ const {
   getPasswordResetUrl,
   resetPasswordTemplate,
   sendEmailToGardernersTemplate,
-} = require('../auth/email');
+} = require('../helpers/email');
 const UserModel = require('../models/User');
 
 // Helper function for sending email
