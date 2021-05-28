@@ -1,3 +1,11 @@
+/*
+ * @Author Cornflourblue
+ * @Date June 17 2020
+ * @Title Node.js + MongoDB API - JWT Authentication with Refresh Tokens
+ * @Type Forum post code
+ * @URL = https://jasonwatmore.com/post/2020/06/17/nodejs-mongodb-api-jwt-authentication-with-refresh-tokens
+ */
+
 module.exports = validateRequest;
 
 function validateRequest(req, next, schema) {
@@ -6,12 +14,12 @@ function validateRequest(req, next, schema) {
     allowUnknown: true,
     stripUnkown: true,
   };
-  const {error, value} = schema.validate(req.body, options);
+  const { error, value } = schema.validate(req.body, options);
   if (error) {
     console.log(error);
     next(`Validation error: ${error.details.map(x => x.message).join(', ')}`);
   } else {
     req.body = value;
-		next();
+    next();
   }
 }

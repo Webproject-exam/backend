@@ -1,11 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {
-  transporter,
+  smtpTrans,
   getPasswordResetUrl,
   resetPasswordTemplate,
   sendEmailToGardernersTemplate,
-} = require('../auth/email');
+} = require('../helpers/email');
 const UserModel = require('../models/User');
 
 // Helper function for sending email
@@ -33,7 +33,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
 
   //  Sends email using template
   try {
-    const info = await transporter.sendMail(emailTemplate);
+    const info = await smtpTrans.sendMail(emailTemplate);
     res.status(200).json({ message: 'Email sent' });
     console.log(`** Email Sent **`, info.response);
   } catch (error) {
@@ -85,8 +85,7 @@ exports.sendEmailToGardeners = async (req, res) => {
   });
   const emailTemplate = sendEmailToGardernersTemplate(emailsArray, plantUrl);
   try {
-    console.log(emailTemplate);
-    const info = await transporter.sendMail(emailTemplate);
+    const info = await smtpTrans.sendMail(emailTemplate);
     res.status(200).json({ message: 'Email to gardeners sent' });
     console.log(`** Email to gardeners sent **`, info.response);
   } catch (error) {

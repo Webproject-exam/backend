@@ -2,7 +2,7 @@ const Plant = require('../models/Plant');
 const User = require('../models/User');
 const jwtDecode = require('jwt-decode');
 const { parseISO, isToday, startOfDay } = require('date-fns');
-const { transporter, sendEmailToGardernersTemplate } = require('../auth/email');
+const { smtpTrans, sendEmailToGardernersTemplate } = require('../auth/email');
 
 exports.getAllPlants = async (req, res) => {
   try {
@@ -198,10 +198,6 @@ exports.requestPlant = async (req, res) => {
   const { id, date } = req.body;
   const plantUrl = `${process.env.FRONTENDHOST}/plants/${id}`;
 
-  if (!isToday(parseISO(date))) {
-    return res.status(400).json({ error: 'Date is not today' });
-  }
-
   const users = await User.find({}, 'role email');
   let emailsArray = [];
   users.map(user => {
@@ -220,7 +216,7 @@ exports.requestPlant = async (req, res) => {
       { lastRequestedDate: startOfDay(Date.now()) },
       { upsert: true }
     );
-    const info = await transporter.sendMail(emailTemplate);
+    const info = await smtpTrans.sendMail(emailTemplate);
     res.status(200).json({ message: 'Email to gardeners sent' });
     console.log(`** Email to gardeners sent **`, info.response);
   } catch (error) {
@@ -228,5 +224,6 @@ exports.requestPlant = async (req, res) => {
       message: 'Internal server error when updating plant',
       error,
     });
+    console.log(error);
   }
 };
