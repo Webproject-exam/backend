@@ -380,10 +380,10 @@
         ]
       }
     },
-    "/dashboard": {
+    "/manage/users": {
       "post": {
         "tags": ["Manage"],
-        "summary": "Create a user",
+        "summary": "Manager user page",
         "description": "Manager can create a new user using name, surname, role, email and password",
         "operationId": "createUser",
         "requestBody": {
@@ -645,6 +645,250 @@
           },
           "500": {
             "description": "Internal server error when deleting user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_token": []
+          }
+        ]
+      }
+    },
+    "/manage/plants": {
+      "post": {
+        "tags": ["Manage"],
+        "summary": "Manager plant page",
+        "description": "Manager can create a new user using name, surname, role, email and password",
+        "operationId": "createPlant",
+        "requestBody": {
+          "description": "Plant to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create plant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Plant"
+                  },
+                  "example": {
+                    "name": "string",
+                    "lighting": "string",
+                    "building": "string",
+                    "floor": "string",
+                    "room": "string",
+                    "image": "string",
+                    "waterNext": "date",
+                    "waterFrequency": "number",
+                    "waterAmount": "string",
+                    "lastWateredDate": "string",
+                    "waterFrequency": "string",
+                    "fertNext": "date",
+                    "fertFrequency": "number",
+                    "fertAmount": "string",
+                    "description": "string",
+                    "placement": "string",
+                    "waterering": "string",
+                    "nutrition": "string",
+                    "createdAt": "date"
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Plant with name ${plant.name} has been created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "name, placement, watering, fertilization and lighting is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
+          },
+          "500": {
+            "description": "internal server error when creating plant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_token": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": ["Manage"],
+        "summary": "Update existing plant",
+        "description": "Manager updates a plant",
+        "operationId": "updatePlant",
+        "requestBody": {
+          "description": "Plant to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "items": {
+                  "$ref": "#/components/schemas/Plant"
+                },
+                "example": {
+                  "name": "string",
+                  "lighting": "string",
+                  "building": "string",
+                  "floor": "string",
+                  "room": "string",
+                  "image": "string",
+                  "waterNext": "date",
+                  "waterFrequency": "number",
+                  "waterAmount": "string",
+                  "lastWateredDate": "string",
+                  "waterFrequency": "string",
+                  "fertNext": "date",
+                  "fertFrequency": "number",
+                  "fertAmount": "string",
+                  "description": "string",
+                  "placement": "string",
+                  "waterering": "string",
+                  "nutrition": "string",
+                  "createdAt": "date"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plant ${plant.name} successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Plant with ${id} does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
+          },
+          "500": {
+            "description": "Internal server error when updating plant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_token": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Manage"],
+        "summary": "Delete a plant",
+        "description": "Manager deletes a plant",
+        "operationId": "deletePlant",
+        "requestBody": {
+          "description": "Plant to delete",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plant with id ${id} was deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Cannot find plant with id ${id}",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
+          },
+          "500": {
+            "description": "Internal server error when deleting plant",
             "content": {
               "application/json": {
                 "schema": {
