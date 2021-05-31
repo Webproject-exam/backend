@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Final Exam API - Fullstack web development",
+    "title": "Final Exam API - Webproject",
     "description": "Description NodeJS server",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
@@ -19,7 +19,7 @@
       "description": "Local development server"
     },
     {
-      "url": "https://fullstackwebproject.herokuapp.com/",
+      "url": "https://webproject-exam.netlify.app/",
       "description": "Heroku backend server"
     }
   ],
@@ -34,7 +34,11 @@
     },
     {
       "name": "Manage",
-      "description": "Manager dashboard"
+      "description": "Manager page"
+    },
+    {
+      "name": "Plant",
+      "description": "Plant page"
     },
     {
       "name": "Email",
@@ -657,6 +661,269 @@
         ]
       }
     },
+    "/:id": {
+      "get": {
+        "tags": ["Plant"],
+        "summary": "Get individual plants",
+        "description": "An individual plant in database",
+        "operationId": "getPlant",
+        "responses": {
+          "200": {
+            "description": "Individual plant object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Plant"
+                  },
+                  "example": {
+                    "name": "string",
+                    "lighting": "string",
+                    "building": "string",
+                    "floor": "string",
+                    "room": "string",
+                    "image": "string",
+                    "waterNext": "date",
+                    "waterFrequency": "number",
+                    "waterAmount": "string",
+                    "lastWateredDate": "string",
+                    "waterFrequency": "string",
+                    "fertNext": "date",
+                    "fertFrequency": "number",
+                    "fertAmount": "string",
+                    "description": "string",
+                    "placement": "string",
+                    "waterering": "string",
+                    "nutrition": "string",
+                    "createdAt": "date"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error when fetching plant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Plant"],
+        "summary": "Update plant care",
+        "description": "update water next, fert next, last lastPostponedBy and lastPostponedReason",
+        "operationId": "updatePlantCare",
+        "responses": {
+          "200": {
+            "description": "Plant updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
+          },
+          "500": {
+            "description": "Internal server error when updating plant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/request": {
+      "patch": {
+        "tags": ["Plant"],
+        "summary": "Email to gardeners sent",
+        "description": "Send email to all gardeners",
+        "operationId": "requestPlant",
+        "responses": {
+          "200": {
+            "description": "Plant updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error when updating plant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": ["Plant"],
+        "summary": "Get all plants",
+        "description": "A list of all plants in database",
+        "operationId": "getAllPlants",
+        "responses": {
+          "200": {
+            "description": "Plants array",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Plant"
+                  },
+                  "example": [
+                    {
+                      "name": "string",
+                      "lighting": "string",
+                      "building": "string",
+                      "floor": "string",
+                      "room": "string",
+                      "image": "string",
+                      "waterNext": "date",
+                      "waterFrequency": "number",
+                      "waterAmount": "string",
+                      "lastWateredDate": "string",
+                      "waterFrequency": "string",
+                      "fertNext": "date",
+                      "fertFrequency": "number",
+                      "fertAmount": "string",
+                      "description": "string",
+                      "placement": "string",
+                      "waterering": "string",
+                      "nutrition": "string",
+                      "createdAt": "date"
+                    },
+                    {
+                      "name": "string",
+                      "lighting": "string",
+                      "building": "string",
+                      "floor": "string",
+                      "room": "string",
+                      "image": "string",
+                      "waterNext": "date",
+                      "waterFrequency": "number",
+                      "waterAmount": "string",
+                      "lastWateredDate": "string",
+                      "waterFrequency": "string",
+                      "fertNext": "date",
+                      "fertFrequency": "number",
+                      "fertAmount": "string",
+                      "description": "string",
+                      "placement": "string",
+                      "waterering": "string",
+                      "nutrition": "string",
+                      "createdAt": "date"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error when fetching all plants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Plant"],
+        "summary": "Water plant",
+        "description": "Update plant date, fert next and fert amount, water amount, water next",
+        "operationId": "updatePlantCare",
+        "responses": {
+          "200": {
+            "description": "Plant updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
+          },
+          "500": {
+            "description": "Internal server error when updating plant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/reset_password": {
       "post": {
         "tags": ["Email"],
@@ -740,6 +1007,116 @@
         },
         "xml": {
           "name": "User"
+        }
+      },
+      "Plant": {
+        "type": "object",
+        "required": [
+          "name",
+          "lighting",
+          "image",
+          "building",
+          "floor",
+          "room",
+          "waterNext",
+          "waterFrequency",
+          "waterAmount",
+          "lastWateredBy",
+          "lastWateredDate",
+          "lastWateredReason",
+          "lastPostponedBy",
+          "lastPostponedReason",
+          "fertNext",
+          "fertFrequency",
+          "fertAmount",
+          "lastFertReason",
+          "lastFertBy",
+          "lastFertDate",
+          "description",
+          "placement",
+          "waterering",
+          "nutrition",
+          "createdAt"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "lighting": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "building": {
+            "type": "string"
+          },
+          "floor": {
+            "type": "string"
+          },
+          "room": {
+            "type": "string"
+          },
+          "waterNext": {
+            "type": "date"
+          },
+          "waterFrequency": {
+            "type": "number"
+          },
+          "waterAmount": {
+            "type": "string",
+            "description": "Waterering amount",
+            "enum": ["plentiful", "average", "sparse"],
+            "default": "plentiful"
+          },
+          "lastWateredDate": {
+            "type": "string"
+          },
+          "lastWateredReason": {
+            "type": "string"
+          },
+          "lastPostponedBy": {
+            "type": "string"
+          },
+          "lastPostponedBy": {
+            "type": "string"
+          },
+          "lastPostponedReason": {
+            "type": "string"
+          },
+          "fertNext": {
+            "type": "date"
+          },
+          "fertFrequency": {
+            "type": "number"
+          },
+          "lastFertReason": {
+            "type": "string"
+          },
+          "fertAmount": {
+            "type": "string",
+            "description": "Fertilization amount",
+            "enum": ["plentiful", "average", "sparse"],
+            "default": "plentiful"
+          },
+          "description": {
+            "type": "string"
+          },
+          "placement": {
+            "type": "string"
+          },
+          "waterering": {
+            "type": "string"
+          },
+          "nutrition": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "date"
+          }
+        },
+        "xml": {
+          "name": "Plant"
         }
       },
       "UserLogin": {
