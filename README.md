@@ -2,6 +2,7 @@
 # Plantrol
 
 This is the front-end of Plantrol.
+URL: https://webproject-exam.netlify.app/
 
 ## Installation
 
